@@ -916,8 +916,11 @@ input.invalid, textarea.invalid, select.invalid{
 
 /* Banner slider: fixed 500px is too tall on mobile */
 @media (max-width: 600px){
-  .banner-slider{ height: 56vw; min-height: 200px; }
+  .banner-slider{ height: 56vw; min-height: 220px; }
   .hero{ min-height: auto; }
+  /* Banners are very wide (logo+tagline on left, products on right).
+     Default center crop hides the logo. Anchor to left so logo is visible. */
+  .banner-slide img{ object-position: left center; }
 }
 
 /* Trust band: phone numbers may overflow on 375px */
