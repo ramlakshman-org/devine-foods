@@ -1,0 +1,7 @@
+.claude/
+Food Code.zip
+devine-admin/node_modules/
+devine-admin/.next/
+devine-admin/.env.local
+
+.vercel
