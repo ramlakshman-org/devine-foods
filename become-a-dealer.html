@@ -115,16 +115,6 @@
   .why-item p{ color: var(--ink-soft); font-size:0.95rem; }
   .why-item b{ display:block; margin-bottom:2px; }
 
-  .video-wrap{
-    max-width: 760px;
-    margin: 0 auto;
-    border-radius: 6px;
-    overflow:hidden;
-    border: 1px solid var(--line);
-    box-shadow: 0 24px 40px rgba(35,48,28,0.10);
-  }
-  .video-wrap video{ width:100%; display:block; background:#000; }
-
   .faq-list{ max-width: 820px; margin: 0 auto; }
   .faq-item{
     border-bottom: 1px solid var(--line);
@@ -235,22 +225,6 @@
   </div>
 </section>
 
-
-<!-- VIDEO (VSEO) -->
-<section class="section-pad">
-  <div class="container">
-    <div class="section-head">
-      <h2>See how Devine products are made</h2>
-      <p>A short look inside our Tamil Nadu manufacturing unit.</p>
-    </div>
-    <div class="video-wrap">
-      <video controls preload="metadata" poster="banners/banner.png" aria-label="Devine natural products — manufacturing and product overview">
-        <source src="products/Products%20promo.mp4" type="video/mp4">
-        Your browser does not support the video tag. You can view the video directly at products/Products%20promo.mp4.
-      </video>
-    </div>
-  </div>
-</section>
 
 <!-- DEALER REGISTRATION FORM -->
 <section class="section-pad bg-ivory-deep" id="dealerForm">
@@ -572,18 +546,6 @@
 }
 </script>
 
-<!-- ============ VSEO / Structured data for promo video ============ -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "VideoObject",
-  "name": "Devine Natural Products — Manufacturing & Product Overview",
-  "description": "A short look inside Devine's Tamil Nadu manufacturing unit and its range of natural honey, preserve, dry fruit and pooja products.",
-  "thumbnailUrl": "https://www.devinefoods.in/banners/banner.png",
-  "uploadDate": "2026-07-23",
-  "contentUrl": "https://www.devinefoods.in/products/Products%20promo.mp4"
-}
-</script>
 
 <script src="script.js"></script>
 <script>
