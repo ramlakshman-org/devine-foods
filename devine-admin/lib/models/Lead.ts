@@ -1,7 +1,14 @@
 import mongoose, { Schema, Document } from 'mongoose'
 
-export type LeadStatus = 'new' | 'contacted' | 'interested' | 'follow_up' | 'negotiating' | 'converted' | 'lost'
-export type BusinessType = 'retailer' | 'distributor' | 'wholesaler' | 'other'
+export type LeadStatus =
+  | 'new'
+  | 'contacted' | 'interested' | 'follow_up' | 'negotiating' | 'converted' | 'lost'
+  | 'replied' | 'resolved'
+  | 'shortlisted' | 'interviewed' | 'hired' | 'rejected'
+
+export type BusinessType = 'dealer' | 'retailer' | 'distributor' | 'wholesaler' | 'caterer' | 'temple' | 'corporate' | 'other'
+
+export type LeadSource = 'dealer-form' | 'contact-form' | 'career-form'
 
 export interface INote {
   text: string
@@ -13,8 +20,12 @@ export interface ILead extends Document {
   name: string
   phone: string
   email?: string
-  city: string
-  businessType: BusinessType
+  city?: string
+  businessName?: string
+  businessType?: BusinessType
+  products?: string
+  role?: string
+  source?: LeadSource
   message?: string
   status: LeadStatus
   assignedTo?: mongoose.Types.ObjectId
@@ -33,10 +44,18 @@ const LeadSchema = new Schema<ILead>({
   name: { type: String, required: true },
   phone: { type: String, required: true },
   email: { type: String },
-  city: { type: String, required: true },
-  businessType: { type: String, enum: ['retailer', 'distributor', 'wholesaler', 'other'], required: true },
+  city: { type: String },
+  businessName: { type: String },
+  businessType: { type: String, enum: ['dealer', 'retailer', 'distributor', 'wholesaler', 'caterer', 'temple', 'corporate', 'other'] },
+  products: { type: String },
+  role: { type: String },
+  source: { type: String, enum: ['dealer-form', 'contact-form', 'career-form'] },
   message: { type: String },
-  status: { type: String, enum: ['new', 'contacted', 'interested', 'follow_up', 'negotiating', 'converted', 'lost'], default: 'new' },
+  status: {
+    type: String,
+    enum: ['new', 'contacted', 'interested', 'follow_up', 'negotiating', 'converted', 'lost', 'replied', 'resolved', 'shortlisted', 'interviewed', 'hired', 'rejected'],
+    default: 'new',
+  },
   assignedTo: { type: Schema.Types.ObjectId, ref: 'User', default: null },
   notes: [NoteSchema],
 }, { timestamps: true })

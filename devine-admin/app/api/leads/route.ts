@@ -19,6 +19,8 @@ export async function GET(req: NextRequest) {
 
   if (role === 'telecaller') filter.assignedTo = userId
 
+  const source = searchParams.get('source')
+  if (source) filter.source = source
   if (status) filter.status = status
   if (search) {
     filter.$or = [

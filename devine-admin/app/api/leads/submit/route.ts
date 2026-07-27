@@ -13,14 +13,14 @@ export async function OPTIONS() {
 }
 
 export async function POST(req: NextRequest) {
-  const { name, phone, email, city, businessType, message } = await req.json()
+  const { name, phone, email, city, businessName, businessType, products, role, source, message } = await req.json()
 
-  if (!name || !phone || !city || !businessType) {
-    return NextResponse.json({ error: 'Name, phone, city and business type are required' }, { status: 400, headers: CORS })
+  if (!name || !phone) {
+    return NextResponse.json({ error: 'Name and phone are required' }, { status: 400, headers: CORS })
   }
 
   await connectDB()
-  const lead = await Lead.create({ name, phone, email, city, businessType, message, status: 'new' })
+  const lead = await Lead.create({ name, phone, email, city, businessName, businessType, products, role, source, message, status: 'new' })
 
   return NextResponse.json({ ok: true, id: lead._id }, { status: 201, headers: CORS })
 }

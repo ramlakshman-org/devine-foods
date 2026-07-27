@@ -5,27 +5,37 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 
-const nav = [
-  { href: '/leads', label: 'Leads' },
+const leadsNav = [
+  { href: '/dealer-apps', label: 'Dealer apps' },
+  { href: '/enquiries', label: 'Enquiries' },
+  { href: '/career', label: 'Career' },
+]
+
+const teamNav = [
   { href: '/telecallers', label: 'Telecallers', adminOnly: true },
 ]
 
 function NavLinks({ role, onClose }: { role: string; onClose?: () => void }) {
   const pathname = usePathname()
+
+  const linkClass = (href: string) => cn(
+    'flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors',
+    pathname === href
+      ? 'bg-white/10 text-white'
+      : 'text-white/60 hover:bg-white/5 hover:text-white'
+  )
+
   return (
     <>
-      {nav.filter(n => !n.adminOnly || role === 'admin').map(n => (
-        <Link
-          key={n.href}
-          href={n.href}
-          onClick={onClose}
-          className={cn(
-            'flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors',
-            pathname === n.href
-              ? 'bg-white/10 text-white'
-              : 'text-white/60 hover:bg-white/5 hover:text-white'
-          )}
-        >
+      <p className="px-3 pt-1 pb-1 text-xs font-medium text-white/30 uppercase tracking-wider">Leads</p>
+      {leadsNav.map(n => (
+        <Link key={n.href} href={n.href} onClick={onClose} className={linkClass(n.href)}>
+          {n.label}
+        </Link>
+      ))}
+      <p className="px-3 pt-4 pb-1 text-xs font-medium text-white/30 uppercase tracking-wider">Team</p>
+      {teamNav.filter(n => !n.adminOnly || role === 'admin').map(n => (
+        <Link key={n.href} href={n.href} onClick={onClose} className={linkClass(n.href)}>
           {n.label}
         </Link>
       ))}
