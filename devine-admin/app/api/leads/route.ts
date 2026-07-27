@@ -20,7 +20,11 @@ export async function GET(req: NextRequest) {
   if (role === 'telecaller') filter.assignedTo = userId
 
   const source = searchParams.get('source')
-  if (source) filter.source = source
+  if (source === 'dealer-form') {
+    filter.$or = [{ source: 'dealer-form' }, { source: { $exists: false } }, { source: null }]
+  } else if (source) {
+    filter.source = source
+  }
   if (status) filter.status = status
   if (search) {
     filter.$or = [
