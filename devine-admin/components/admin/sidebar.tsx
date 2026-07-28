@@ -27,7 +27,10 @@ function NavLinks({ role, onClose }: { role: string; onClose?: () => void }) {
 
   return (
     <>
-      <p className="px-3 pt-1 pb-1 text-xs font-medium text-white/30 uppercase tracking-wider">Leads</p>
+      <Link href="/dashboard" onClick={onClose} className={linkClass('/dashboard')}>
+        Dashboard
+      </Link>
+      <p className="px-3 pt-4 pb-1 text-xs font-medium text-white/30 uppercase tracking-wider">Leads</p>
       {leadsNav.map(n => (
         <Link key={n.href} href={n.href} onClick={onClose} className={linkClass(n.href)}>
           {n.label}
