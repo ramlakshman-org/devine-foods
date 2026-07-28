@@ -295,5 +295,71 @@
 </footer>
 
 <script src="script.js"></script>
+<script>
+(function () {
+  var form = document.getElementById('contactForm');
+  if (!form) return;
+
+  function normalizePhone(raw) {
+    var s = raw.replace(/[\s\-\.]/g, '');
+    if (/^\+91/.test(s)) s = s.slice(3);
+    else if (/^91\d{10}$/.test(s)) s = s.slice(2);
+    return s;
+  }
+  function showErr(id, msg) {
+    var el = document.getElementById(id);
+    if (el) { el.textContent = msg; el.classList.add('visible'); }
+  }
+  function markInvalid(id) {
+    var el = document.getElementById(id);
+    if (el) el.classList.add('invalid');
+  }
+  function clearErrors() {
+    form.querySelectorAll('.field-error').forEach(function (el) { el.classList.remove('visible'); el.textContent = ''; });
+    form.querySelectorAll('input, select, textarea').forEach(function (el) { el.classList.remove('invalid'); });
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    clearErrors();
+    var valid = true;
+
+    var name         = document.getElementById('name').value.trim();
+    var phone        = normalizePhone(document.getElementById('phone').value.trim());
+    var city         = document.getElementById('city').value.trim();
+    var businessType = document.getElementById('businessType').value;
+    var email        = document.getElementById('email').value.trim();
+    var message      = document.getElementById('message').value.trim();
+
+    if (!name)                          { markInvalid('name');         showErr('nameError',         'Please enter your name.');                        valid = false; }
+    if (!/^\d{10}$/.test(phone))        { markInvalid('phone');        showErr('phoneError',        'Enter a valid 10-digit number (e.g. 9962918979).'); valid = false; }
+    if (!city)                          { markInvalid('city');          showErr('cityError',          'Please enter your city.');                        valid = false; }
+    if (!businessType)                  { markInvalid('businessType'); showErr('businessTypeError', 'Please select a business type.');                  valid = false; }
+    if (!valid) return;
+
+    var btn = form.querySelector('button[type="submit"]');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    try {
+      var res = await fetch('https://d-1nfo.vercel.app/api/leads/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, phone: phone, city: city, businessType: businessType, email: email, message: message, source: 'contact-form' })
+      });
+      if (res.ok) {
+        form.style.display = 'none';
+        document.getElementById('formSuccess').style.display = 'block';
+      } else {
+        throw new Error();
+      }
+    } catch (_) {
+      btn.textContent = 'Send Enquiry';
+      btn.disabled = false;
+      showErr('nameError', 'Something went wrong. Please call us directly.');
+    }
+  });
+}());
+</script>
 </body>
 </html>

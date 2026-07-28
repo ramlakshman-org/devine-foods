@@ -562,6 +562,12 @@
     var el = document.getElementById(inputId);
     if (el) el.classList.add('invalid');
   }
+  function normalizePhone(raw) {
+    var s = raw.replace(/[\s\-\.]/g, '');
+    if (/^\+91/.test(s)) s = s.slice(3);
+    else if (/^91\d{10}$/.test(s)) s = s.slice(2);
+    return s;
+  }
   function clearErrors() {
     form.querySelectorAll('.field-error').forEach(function (el) { el.classList.remove('visible'); el.textContent = ''; });
     form.querySelectorAll('input, textarea, select').forEach(function (el) { el.classList.remove('invalid'); });
@@ -575,7 +581,7 @@
 
     var name         = document.getElementById('d-name').value.trim();
     var businessName = document.getElementById('d-businessName').value.trim();
-    var phone        = document.getElementById('d-phone').value.trim();
+    var phone        = normalizePhone(document.getElementById('d-phone').value.trim());
     var city         = document.getElementById('d-city').value.trim();
     var businessType = document.getElementById('d-businessType').value;
     var products     = Array.from(form.querySelectorAll('input[name="products"]:checked')).map(function (c) { return c.value; });
@@ -583,7 +589,7 @@
 
     if (!name)         { markInvalid('d-name');         showErr('d-nameError',         'Please enter your name.');              valid = false; }
     if (!businessName) { markInvalid('d-businessName'); showErr('d-businessNameError', 'Please enter your business name.');     valid = false; }
-    if (!phone)        { markInvalid('d-phone');        showErr('d-phoneError',        'Please enter your phone number.');      valid = false; }
+    if (!/^\d{10}$/.test(phone)) { markInvalid('d-phone'); showErr('d-phoneError', 'Enter a valid 10-digit number (e.g. 9962918979).'); valid = false; }
     if (!city)         { markInvalid('d-city');         showErr('d-cityError',         'Please enter your city or district.');  valid = false; }
     if (!businessType) { markInvalid('d-businessType'); showErr('d-businessTypeError', 'Please select a business type.');      valid = false; }
     if (products.length === 0) { showErr('d-productsError', 'Please select at least one product category.'); valid = false; }

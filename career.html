@@ -182,7 +182,7 @@
             </div>
             <div class="field">
               <label for="cf-phone">Phone *</label>
-              <input type="tel" id="cf-phone" name="phone" placeholder="10-digit mobile" maxlength="10" required>
+              <input type="tel" id="cf-phone" name="phone" placeholder="10-digit mobile" required>
             </div>
           </div>
           <div class="field">
@@ -228,7 +228,10 @@
     errEl.style.display = 'none';
 
     var name  = document.getElementById('cf-name').value.trim();
-    var phone = document.getElementById('cf-phone').value.trim();
+    var rawPhone = document.getElementById('cf-phone').value.trim();
+    var phone = rawPhone.replace(/[\s\-\.]/g, '');
+    if (/^\+91/.test(phone)) phone = phone.slice(3);
+    else if (/^91\d{10}$/.test(phone)) phone = phone.slice(2);
     var role  = document.getElementById('cf-role').value;
     var msg   = document.getElementById('cf-msg').value.trim();
 
@@ -238,7 +241,7 @@
       return;
     }
     if (!/^\d{10}$/.test(phone)) {
-      errEl.textContent = 'Enter a valid 10-digit phone number.';
+      errEl.textContent = 'Enter a valid 10-digit number (e.g. 9962918979).';
       errEl.style.display = 'block';
       return;
     }
